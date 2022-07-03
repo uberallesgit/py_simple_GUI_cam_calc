@@ -9,10 +9,12 @@ from time import sleep
 
 col1 = sg.Column([
     # Categories sg.Frame
-    [sg.Frame('Вариант установки:', [[sg.Radio('Камеры 2 МП', 'radio1', default=True, key='-2MP-', size=(10, 1)),
-                               sg.Radio('Камеры 5 МП', 'radio1', key='-5MP-', size=(10, 1)),
-                               sg.Radio('IP-Камеры 2 МП', 'radio1', key='-IP2MP-', size=(10, 1)),
-                               sg.Radio('IP-Камеры 5 МП', 'radio1', key='-IP5MP-', size=(10, 1))]])],
+    [sg.Frame('Вариант установки:', [[sg.Radio('Кам 2 МП', 'radio1', default=True, key='-2MP-', size=(10, 1)),
+                               sg.Radio('Кам 5 МП', 'radio1', key='-5MP-', size=(10, 1)),
+                               sg.Radio('IP-Кам2 МП', 'radio1', key='-IP2MP-', size=(10, 1)),
+                               sg.Radio('IP-Кам 5 МП', 'radio1', key='-IP5MP-', size=(10, 1)),
+                               sg.Radio('IP-Compact', 'radio1', key='-COMPAC-', size=(10, 1))]],)],
+
     # Information sg.Frame
     [sg.Frame('Ввод данных:', [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
 
@@ -24,9 +26,12 @@ col1 = sg.Column([
                                                       sg.Radio('8', 'radio2', key='-8PORTS-', size=(2, 1)),
                                                       sg.Radio('16', 'radio2', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio2', key='-32PORTS-', size=(2, 1))],
-        [sg.Text('                             '),sg.Button('OK', key='-CONFIRM-',size=(10,1) )],
+        [sg.Text('                             '),sg.Button('OK', key='-CONFIRM-',size=(10,1))],
                                 [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)]
-                                                      ], size=(350, 350), pad=(0, 0))]])], ], pad=(0, 0))
+                                                      ], size=(350, 350), pad=(0, 0))]]),
+    sg.Frame("",[[sg.Image(filename="DoZOR.png",size=(350,350),p=(0,0))]])
+     ],
+], pad=(0, 0))
 
 
 
@@ -54,7 +59,7 @@ sheet = book["Equip"]
 ############################################################################################################
 
 def cam_calc_1(counter,quantity):
-    print("Вариант 1...")
+    print("Вариант 2MP...")
     list = [2,15,16,18]
     for i in list:
          with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",newline="") as file:
@@ -153,7 +158,7 @@ def cam_calc_1(counter,quantity):
 ########################################################################################################################
 
 def cam_calc_2(counter,quantity):
-    print("Вариант 2...")
+    print("Вариант 5MP...")
 
 
     list = [3, 15, 16, 18]
@@ -259,7 +264,7 @@ def cam_calc_2(counter,quantity):
 ########################################################################################################################
 
 def ip_cam_calc_3(counter,quantity):
-    print("Вариант 3...")
+    print("Вариант P 2MP...")
     counter = 1
     list = [9, 21, 16, 18]
     for i in list:
@@ -281,67 +286,40 @@ def ip_cam_calc_3(counter,quantity):
         # Жесткий диск
         writer.writerow((counter, sheet[f"a{11}"].value, sheet[f"B{11}"].value, 1, int(sheet[f"B{11}"].value) * 1))
         counter += 1
-    # Условие  выбора регистратора:
-    reg_channels = input("Число каналов регистратора?  ")
-    if reg_channels in ["0", " ", ""] or not reg_channels.isnumeric():
-        reg_channels = quantity
-    elif reg_channels < quantity:
-        print("Число камер превышает  число портов регистратора, хотите изменить данные? \nДА -1\nНЕТ - 0")
-        res = input()
-        if res in ["ДА", "да", "Да", "дА", "1", "хочу", "ага", "Давай", "Хочу", "yes", "Yes", "YES", "Мочи", "мочи"]:
-            reg_channels = input("Число каналов регистратора ЕЩЁ РАЗ! ")
+        # Условие  выбора регистратора:  ############################################################################
+        if values["-4PORTS-"]:
+            reg_count = 4
+            ports = 4
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-8PORTS-"]:
+            reg_count = 5
+            ports = 8
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-16PORTS-"]:
+            reg_count = 6
+            ports = 16
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-32PORTS-"]:
+            reg_count = 22
+            ports = 32
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
 
-    if int(reg_channels) <= 4:
-        global reg_count
-        reg_count = 4
+    with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
+              newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
+                         int(sheet[f"B{reg_count}"].value) * 1))
+        counter += 1
 
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-    elif 4 < int(reg_channels) <= 8:
+        ############## подсчет суммы
 
-        reg_count = 5
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-
-    elif int(reg_channels) == 9:
-
-        reg_count = 23
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-
-    elif 8 < int(reg_channels) <= 16:
-
-        reg_count = 6
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-    elif 16 < int(reg_channels) <= 32:
-
-        reg_count = 22
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
     list2 = [reg_count, 11]
 
-    # подсчет суммы
+
 
     sum1 = 0
     sum2 = 0
@@ -386,14 +364,11 @@ def ip_cam_calc_3(counter,quantity):
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply))
-        print("sum1",sum1)
-        print("sum2",sum2)
-        print("sum_cab",sum_cab)
-        print("power_supply",power_supply)
+
 ########################################################################################################################
 
 def ip_cam_calc_4(counter,quantity):
-    print("Вариант 4...")
+    print("Вариант IP 5MP...")
 
     counter = 1
     list = [10, 21, 16, 18]
@@ -418,57 +393,28 @@ def ip_cam_calc_4(counter,quantity):
         writer.writerow((counter, sheet[f"a{11}"].value, sheet[f"B{11}"].value, 1, int(sheet[f"B{11}"].value) * 1))
         counter += 1
 
-    # Условие  выбора регистратора:
-    reg_channels = input("Число каналов регистратора?  ")
-    if reg_channels in ["0", " ", ""] or not reg_channels.isnumeric():
-        reg_channels = quantity
-    elif reg_channels < quantity:
-        print("Число камер превышает  число портов регистратора, хотите изменить данные? \nДА -1\nНЕТ - 0")
-        res = input()
-        if res in ["ДА", "да", "Да", "дА", "1", "хочу", "ага", "Давай", "Хочу", "yes", "Yes", "YES", "Мочи", "мочи"]:
-            reg_channels = input("Число каналов регистратора ЕЩЁ РАЗ! ")
-    if int(reg_channels) <= 4:
-        global reg_count
-        reg_count = 4
+        # Условие  выбора регистратора:  ############################################################################
+        if values["-4PORTS-"]:
+            reg_count = 4
+            ports = 4
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-8PORTS-"]:
+            reg_count = 5
+            ports = 8
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-16PORTS-"]:
+            reg_count = 6
+            ports = 16
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-32PORTS-"]:
+            reg_count = 22
+            ports = 32
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
 
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-    elif 4 < int(reg_channels) <= 8:
-
-        reg_count = 5
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-
-    elif int(reg_channels) == 9:
-
-        reg_count = 23
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-
-    elif 8 < int(reg_channels) <= 16:
-
-        reg_count = 6
-        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
-                  newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
-                             int(sheet[f"B{reg_count}"].value) * 1))
-            counter += 1
-    elif 16 < int(reg_channels) <= 32:
-
-        reg_count = 22
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
@@ -529,7 +475,7 @@ def ip_cam_calc_4(counter,quantity):
 ########################################################################################################################
 
 def ip_sd_calc_5(counter,quantity):
-    print("Вариант 5 ...")
+    print("Вариант IP-Compac ...")
     counter = 1
     list = [7,12,16]
     cam_sum = 0
@@ -547,12 +493,15 @@ def ip_sd_calc_5(counter,quantity):
         writer.writerow(("", "Итого", "", "", cam_sum))
 ########################################################################################################################
 
+#MAIN LOOP
 
 while True:
     event, values = window.read()
     print(event, values)
     if event == sg.WIN_CLOSED:
         break
+
+
     if event == '-CONFIRM-':
         client = values["-CLIENT-IN-"]
         if client == "":
@@ -585,7 +534,7 @@ while True:
 
 
         cam_calc_1(counter,quantity)
-        window["--FINAL_MESSAGE--"].update(visible=True)
+
 
 
 
@@ -602,7 +551,13 @@ while True:
         ip_cam_calc_4(counter,quantity)
 
     elif values['-COMPAC-']:
+        window["-4PORTS-"].update(visible=False)
+        window["-8PORTS-"].update(visible=False)
+        window["-16PORTS-"].update(visible=False)
+        window["-32PORTS-"].update(visible=False)
         ip_sd_calc_5(counter,quantity)
+
+    window["--FINAL_MESSAGE--"].update(visible=True)
 
 
 
