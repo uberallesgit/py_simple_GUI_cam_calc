@@ -14,6 +14,7 @@ col1 = sg.Column([
                                sg.Radio('IP-Кам2 МП', 'radio1', key='-IP2MP-', size=(10, 1)),
                                sg.Radio('IP-Кам 5 МП', 'radio1', key='-IP5MP-', size=(10, 1)),
                                sg.Radio('IP-Compact', 'radio1', key='-COMPAC-', size=(10, 1))]],)],
+                                [sg.Text("                                  "),sg.Button('OK', key='-CONFIRM1-',size=(10,1))],
 
     # Information sg.Frame
     [sg.Frame('Ввод данных:', [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
@@ -49,6 +50,7 @@ counter = 1
 quantity = 0
 client = ""
 reg_count = 0
+hdd_count = 0
 
 
 
