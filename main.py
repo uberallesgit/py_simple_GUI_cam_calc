@@ -19,7 +19,8 @@ ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIE
                                                       sg.Radio('16', 'radio1', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio1', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_2MP-',size=(10,1))],
-                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)]
+                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
+                                   [sg.Image(filename="ahd.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 
 ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
@@ -33,7 +34,8 @@ ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIEN
                                                       sg.Radio('16', 'radio2', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio2', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_5MP-',size=(10,1))],
-                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)]
+                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
+                                  [sg.Image(filename="ahd.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
 
@@ -46,7 +48,8 @@ ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                       sg.Radio('16', 'radio3', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio3', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_2MP-',size=(10,1))],
-                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)]
+                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
+                                 [sg.Image(filename="IP.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 
 ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
@@ -60,7 +63,8 @@ ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                       sg.Radio('16', 'radio4', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio4', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_5MP-',size=(10,1))],
-                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)]
+                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
+                                 [sg.Image(filename="IP.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 
 compact_ip =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
@@ -70,7 +74,9 @@ compact_ip =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-C
                                                       [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-', size=(5, 1),justification="r")],
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_COMPAC-',size=(10,1))],
-                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)]
+                                [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
+                                 [sg.Image(filename="compac.png")]
+
                                                       ], size=(350, 350), pad=(0, 0))]]
 
 tab_group = [[sg.TabGroup(
