@@ -4,15 +4,15 @@ from datetime import datetime as dt
 from openpyexcel import load_workbook
 import csv
 import math
-from time import sleep
 
 
 
-ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
 
-                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-', size=(5, 1),justification="r")],
+ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-2MP-', size=(30, 1),justification="l"),],
 
-                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-2MP-', size=(5, 1),justification="r")],
+
+                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-2MP-', size=(5, 1),justification="r")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio1', default=True, key='-4PORTS-', size=(2, 1)),
                                                       sg.Radio('8', 'radio1', key='-8PORTS-', size=(2, 1)),
@@ -20,14 +20,14 @@ ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIE
                                                       sg.Radio('32', 'radio1', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_2MP-',size=(10,1))],
                                 [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                   [sg.Image(filename="ahd.png")]
+                                   [sg.Text('      '),sg.Image(filename="ahd.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 
-ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
+ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-5MP-', size=(30, 1),justification="l"),],
 
-                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-5MP-', size=(5, 1),justification="r")],
 
-                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-5MP-', size=(5, 1),justification="r")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio2', default=True, key='-4PORTS-', size=(2, 1)),
                                                       sg.Radio('8', 'radio2', key='-8PORTS-', size=(2, 1)),
@@ -35,47 +35,49 @@ ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIEN
                                                       sg.Radio('32', 'radio2', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_5MP-',size=(10,1))],
                                 [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                  [sg.Image(filename="ahd.png")]
+                                  [sg.Text('      '),sg.Image(filename="ahd.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
-ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
+ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-IP2MP-', size=(30, 1),justification="l"),],
 
-                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-IP2MP-', size=(5, 1),justification="r")],
 
-                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-IP2MP-', size=(5, 1),justification="r")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio3', default=True, key='-4PORTS-', size=(2, 1)),
                                                       sg.Radio('8', 'radio3', key='-8PORTS-', size=(2, 1)),
+                                                      sg.Radio('9', 'radio3', key='-9PORTS-', size=(2, 1)),
                                                       sg.Radio('16', 'radio3', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio3', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_2MP-',size=(10,1))],
                                 [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                 [sg.Image(filename="IP.png")]
+                                 [sg.Text('      '),sg.Image(filename="IP.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 
-ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
+ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-IP5MP-', size=(30, 1),justification="l"),],
 
-                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-IP5MP-', size=(5, 1),justification="r")],
 
-                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-IP5MP-', size=(5, 1),justification="r")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio4', default=True, key='-4PORTS-', size=(2, 1)),
                                                       sg.Radio('8', 'radio4', key='-8PORTS-', size=(2, 1)),
+                                                      sg.Radio('9', 'radio3', key='-9PORTS-', size=(2, 1)),
                                                       sg.Radio('16', 'radio4', key='-16PORTS-', size=(2, 1)),
                                                       sg.Radio('32', 'radio4', key='-32PORTS-', size=(2, 1))],
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_5MP-',size=(10,1))],
                                 [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                 [sg.Image(filename="IP.png")]
+                                 [sg.Text('      '),sg.Image(filename="IP.png")]
                                                       ], size=(350, 350), pad=(0, 0))]]
 
-compact_ip =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-', size=(30, 1),justification="l"),],
+compact_ip =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-COMP-', size=(30, 1),justification="l"),],
 
-                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-COMP-', size=(5, 1),justification="r")],
 
-                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-', size=(5, 1),justification="r")],
+                                                      [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-COMP-', size=(5, 1),justification="r")],
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_COMPAC-',size=(10,1))],
                                 [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                 [sg.Image(filename="compac.png")]
+                                 [sg.Text('          '),sg.Image(filename="compac.png")]
 
                                                       ], size=(350, 350), pad=(0, 0))]]
 
@@ -100,6 +102,7 @@ quantity = 0
 client = ""
 reg_count = 0
 hdd_count = 0
+cable = 0
 
 
 
@@ -205,7 +208,7 @@ def cam_calc_1(counter,quantity):
     #Итого
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(("****","**************Итого****************","*******","********", sum1+sum2+sum_cab+power_supply))
+        writer.writerow(("****","**************Итого****************","*******","********", sum1 + sum2 + sum_cab + power_supply))
 ########################################################################################################################
 
 def cam_calc_2(counter,quantity):
@@ -348,6 +351,12 @@ def ip_cam_calc_3(counter,quantity):
             ports = 8
             if int(quantity) > ports:
                 sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
+        if values["-9PORTS-"]:
+            reg_count = 23
+            ports = 9
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
         if values["-16PORTS-"]:
             reg_count = 6
             ports = 16
@@ -455,6 +464,11 @@ def ip_cam_calc_4(counter,quantity):
             ports = 8
             if int(quantity) > ports:
                 sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if values["-9PORTS-"]:
+            reg_count = 23
+            ports = 9
+            if int(quantity) > ports:
+                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
         if values["-16PORTS-"]:
             reg_count = 6
             ports = 16
@@ -553,23 +567,102 @@ while True:
         break
 
 
-    if event == '-CONFIRM_5MP-' or "-CONFIRM_AHD_2MP-" or "-CONFIRM_IP_2MP-" or "-CONFIRM_IP_5MP-" or "-COMPAC-":
-        client = values["-CLIENT-IN-"]
+    if event == '-CONFIRM_AHD_2MP-':
+        client = values["-CLIENT-IN-2MP-"]
         if client == "":
             client = "somebody_someone"
         print(client)
-        cable = values["-CABLE-IN-"]
+        cable = values["-CABLE-IN-2MP-"]
         if not cable.isnumeric():
             cable = "0"
         else:
             print("cable = ", cable)
-        quantity = values["-CAM-IN-"]
+        quantity = values["-CAM-IN-2MP-"]
+
+        if quantity == "":
+            quantity = 1
+            sg.popup("Количество камер не указано!\nБудет сформирована смета для ОДНОЙ камеры!")
+            # break
+        elif int(quantity) <= 0:
+            sg.popup("Пардон, сударь, но, похоже, вы гоните ! Количество камер меньше 1")
+            ########################################################################################
+
+    if event == '-CONFIRM_AHD_5MP-':
+        client = values["-CLIENT-IN-5MP-"]
+        if client == "":
+            client = "somebody_someone"
+        print(client)
+        cable = values["-CABLE-IN-5MP-"]
+        if not cable.isnumeric():
+            cable = "0"
+        else:
+            print("cable = ", cable)
+        quantity = values["-CAM-IN-5MP-"]
 
         if quantity == "":
             quantity = 1
             sg.popup("Количество камер не указано!\nБудет сформирована смета для ОДНОЙ камеры!")
         elif int(quantity) <= 0:
             sg.popup("Пардон, сударь, но, похоже, вы гоните ! Количество камер меньше 1")
+###############################################################################################
+
+    if event == '-CONFIRM_IP_2MP-':
+        client = values["-CLIENT-IN-IP2MP-"]
+        if client == "":
+            client = "somebody_someone"
+        print(client)
+        cable = values["-CABLE-IN-IP2MP-"]
+        if not cable.isnumeric():
+            cable = "0"
+        else:
+            print("cable = ", cable)
+        quantity = values["-CAM-IN-IP2MP-"]
+
+        if quantity == "":
+            quantity = 1
+            sg.popup("Количество камер не указано!\nБудет сформирована смета для ОДНОЙ камеры!")
+        elif int(quantity) <= 0:
+            sg.popup("Пардон, сударь, но, похоже, вы гоните ! Количество камер меньше 1")
+  ###########################################################################################
+
+    if event == '-CONFIRM_IP_5MP-':
+        client = values["-CLIENT-IN-IP5MP-"]
+        if client == "":
+            client = "somebody_someone"
+        print(client)
+        cable = values["-CABLE-IN-IP5MP-"]
+        if not cable.isnumeric():
+            cable = "0"
+        else:
+            print("cable = ", cable)
+        quantity = values["-CAM-IN-IP5MP-"]
+
+        if quantity == "":
+            quantity = 1
+            sg.popup("Количество камер не указано!\nБудет сформирована смета для ОДНОЙ камеры!")
+        elif int(quantity) <= 0:
+            sg.popup("Пардон, сударь, но, похоже, вы гоните ! Количество камер меньше 1")
+            #################################################################################
+
+    if event == '-CONFIRM_COMPAC-':
+        client = values["-CLIENT-IN-COMP-"]
+        if client == "":
+            client = "somebody_someone"
+        print(client)
+        cable = values["-CABLE-IN-COMP-"]
+        if not cable.isnumeric():
+            cable = "0"
+        else:
+            print("cable = ", cable)
+        quantity = values["-CAM-IN-COMP-"]
+
+        if quantity == "":
+            quantity = 1
+            sg.popup("Количество камер не указано!\nБудет сформирована смета для ОДНОЙ камеры!")
+        elif int(quantity) <= 0:
+            sg.popup("Пардон, сударь, но, похоже, вы гоните ! Количество камер меньше 1")
+
+
 
 
     print(f"РАсчеты")
