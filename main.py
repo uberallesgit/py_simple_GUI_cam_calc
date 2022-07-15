@@ -15,7 +15,7 @@ ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIE
 
                                                       [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-2MP-', size=(5, 1),justification="r")],
                                                       [sg.Text('Количество портов регистратора:')],
-                                                      [sg.Radio('4', 'radio1', default=True, key='--4PORTS1', size=(2, 1)),
+                                                      [sg.Radio('4', 'radio1', default=True, key='-4PORTS1-', size=(2, 1)),
                                                       sg.Radio('8', 'radio1', key='-8PORTS1-', size=(2, 1)),
                                                       sg.Radio('16', 'radio1', key='-16PORTS1-', size=(2, 1)),
                                                       sg.Radio('32', 'radio1', key='-32PORTS1-', size=(2, 1))],
@@ -93,6 +93,8 @@ tab_group = [[sg.TabGroup(
 
 window = sg.Window('Camulator', tab_group)
 
+
+
 def today_is():
     return dt.now().strftime("%d.%m.%Y")
 
@@ -137,23 +139,24 @@ def cam_calc_1(counter,quantity):
     if values["-4PORTS1-"]:
         reg_count = 4
         ports = 4
-        if int(quantity) > ports:
-            sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
     if values["-8PORTS1-"]:
         reg_count = 5
         ports = 8
-        if int(quantity) > ports:
-            sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
     if values["-16PORTS1-"]:
         reg_count = 6
         ports = 16
-        if int(quantity) > ports:
-            sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
     if values["-32PORTS1-"]:
         reg_count = 22
         ports = 32
-        if int(quantity) > ports:
-            sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+    if int(quantity) > ports:
+        # sg.popup_yes_no("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        sg.popup("Внимание! Портов регистратора меньше, чем камер")
+
+
+
 
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
               newline="") as file:
@@ -243,23 +246,21 @@ def cam_calc_2(counter,quantity):
         if values["-4PORTS2-"]:
             reg_count = 4
             ports = 4
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-8PORTS2-"]:
             reg_count = 5
             ports = 8
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-16PORTS2-"]:
             reg_count = 6
             ports = 16
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-32PORTS2-"]:
             reg_count = 22
             ports = 32
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if int(quantity) > ports:
+            # sg.popup_yes_no("Внимание! количество камер больше , чем выбрано портов  регистратора")
+            sg.popup("Внимание! Портов регистратора меньше, чем камер")
 
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
               newline="") as file:
@@ -345,29 +346,25 @@ def ip_cam_calc_3(counter,quantity):
         if values["-4PORTS3-"]:
             reg_count = 4
             ports = 4
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-8PORTS3-"]:
             reg_count = 5
             ports = 8
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
 
         if values["-9PORTS3-"]:
             reg_count = 23
             ports = 9
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-16PORTS3-"]:
             reg_count = 6
             ports = 16
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-32PORTS3-"]:
             reg_count = 22
             ports = 32
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if int(quantity) > ports:
+            sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
 
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
               newline="") as file:
@@ -458,28 +455,25 @@ def ip_cam_calc_4(counter,quantity):
         if values["-4PORTS4-"]:
             reg_count = 4
             ports = 4
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-8PORTS4-"]:
             reg_count = 5
             ports = 8
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-9PORTS4-"]:
             reg_count = 23
             ports = 9
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-16PORTS4-"]:
             reg_count = 6
             ports = 16
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+
         if values["-32PORTS4-"]:
             reg_count = 22
             ports = 32
-            if int(quantity) > ports:
-                sg.popup("Внимание! количество камер больше , чем выбрано портов  регистратора")
+        if int(quantity) > ports:
+            # sg.popup_yes_no("Внимание! количество камер больше , чем выбрано портов  регистратора")
+            sg.popup("Внимание! Портов регистратора меньше, чем камер")
 
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
@@ -556,6 +550,10 @@ def ip_sd_calc_5(counter,quantity):
         writer.writerow(("", "Итого", "", "", cam_sum))
 ########################################################################################################################
 
+
+
+
+
 #MAIN LOOP
 
 while True:
@@ -563,8 +561,8 @@ while True:
     if event == sg.WIN_CLOSED:
         break
 
-
     if event == '-CONFIRM_AHD_2MP-':
+        print(event, values)
         client = values["-CLIENT-IN-2MP-"]
         if client == "":
             client = "somebody_someone"
@@ -583,6 +581,7 @@ while True:
             ########################################################################################
 
     if event == '-CONFIRM_AHD_5MP-':
+        print(event, values)
         client = values["-CLIENT-IN-5MP-"]
         if client == "":
             client = "somebody_someone"
@@ -599,6 +598,7 @@ while True:
 ###############################################################################################
 
     if event == '-CONFIRM_IP_2MP-':
+        print(event, values)
         client = values["-CLIENT-IN-IP2MP-"]
         if client == "":
             client = "somebody_someone"
@@ -617,6 +617,7 @@ while True:
   ###########################################################################################
 
     if event == '-CONFIRM_IP_5MP-':
+        print(event, values)
         client = values["-CLIENT-IN-IP5MP-"]
         if client == "":
             client = "somebody_someone"
