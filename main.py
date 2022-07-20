@@ -34,7 +34,7 @@ ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIE
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_2MP-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                   [sg.Text('      '),sg.Image(filename="ahd.png")]
+                                   [sg.Text('      '), sg.Image(filename="img/ahd.png")]
                                                       ],  pad=(0, 0))]]
 
 ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-5MP-', size=(30, 1),justification="l"),],
@@ -62,7 +62,7 @@ ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIEN
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_5MP-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                  [sg.Text('      '),sg.Image(filename="ahd.png")]
+                                  [sg.Text('      '), sg.Image(filename="img/ahd.png")]
                                                       ], pad=(0, 0))]]
 ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-IP2MP-', size=(30, 1),justification="l"),],
 
@@ -89,7 +89,7 @@ ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                       sg.Radio('2 HDD', 'radio_HDD_ip2mp', key='-2ITEMS-HDD-IP2MP-', size=(5, 1))],
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_2MP-',size=(10,1))],
-                                 [sg.Text('      '),sg.Image(filename="IP.png")]
+                                 [sg.Text('      '), sg.Image(filename="img/IP.png")]
                                                       ], pad=(0, 0))]]
 
 ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-IP5MP-', size=(30, 1),justification="l"),],
@@ -118,7 +118,7 @@ ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_5MP-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                 [sg.Text('      '),sg.Image(filename="IP.png")]
+                                 [sg.Text('      '), sg.Image(filename="img/IP.png")]
                                                       ], pad=(0, 0))]]
 
 compact_ip =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-COMP-', size=(30, 1),justification="l"),],
@@ -129,7 +129,7 @@ compact_ip =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-C
 
         [sg.Text('                         '),sg.Button('OK', key='-CONFIRM_COMPAC-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
-                                 [sg.Text('     '),sg.Image(filename="compac.png")]
+                                 [sg.Text('     '), sg.Image(filename="img/compac.png")]
 
                                                       ], pad=(0, 0))]]
 
