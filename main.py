@@ -314,7 +314,6 @@ def cam_calc_1(counter,quantity,hdd_count,hdd_size,power_backup):
 
     if values['-PB-YES-2MP-']:
         power_backup = int(sheet[f"B{power_backup_index}"].value)
-        print(power_backup)
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
@@ -474,7 +473,6 @@ def cam_calc_2(counter,quantity,hdd_count,hdd_size,power_backup):
 
     if values['-PB-YES-5MP-']:
         power_backup = int(sheet[f"B{power_backup_index}"].value)
-        print(power_backup)
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
@@ -486,7 +484,6 @@ def cam_calc_2(counter,quantity,hdd_count,hdd_size,power_backup):
         # подсчет суммы :  ####################################################################################
 
     hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
-    print("hdd_sum = ", hdd_sum)
     list2 = [reg_count]
     sum1 = 0
     sum2 = 0
@@ -627,7 +624,6 @@ def ip_cam_calc_3(counter,quantity,hdd_count,hdd_size,power_backup):
 
     if values['-PB-YES-IP2MP-']:
         power_backup = int(sheet[f"B{power_backup_index}"].value)
-        print(power_backup)
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
@@ -639,7 +635,6 @@ def ip_cam_calc_3(counter,quantity,hdd_count,hdd_size,power_backup):
         ############## подсчет суммы
 
     hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
-    print("hdd_sum = ", hdd_sum)
     list2 = [reg_count]
     sum1 = 0
     sum2 = 0
@@ -785,7 +780,7 @@ def ip_cam_calc_4(counter,quantity,hdd_count,hdd_size,power_backup):
 
             if values['-PB-YES-IP5MP-']:
                 power_backup = int(sheet[f"B{power_backup_index}"].value)
-                print(power_backup)
+
                 with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                           newline="") as file:
                     writer = csv.writer(file)
@@ -798,7 +793,6 @@ def ip_cam_calc_4(counter,quantity,hdd_count,hdd_size,power_backup):
     # подсчет суммы
 
     hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
-    print("hdd_sum = ", hdd_sum)
     list2 = [reg_count]
     sum1 = 0
     sum2 = 0
@@ -879,7 +873,7 @@ while True:
         break
 
     if event == '-CONFIRM_AHD_2MP-':
-        print(event, values)
+
         client = values["-CLIENT-IN-2MP-"]
         if client == "":
             client = "somebody_someone"
@@ -898,7 +892,7 @@ while True:
             ########################################################################################
 
     if event == '-CONFIRM_AHD_5MP-':
-        print(event, values)
+
         client = values["-CLIENT-IN-5MP-"]
         if client == "":
             client = "somebody_someone"
@@ -915,7 +909,7 @@ while True:
 ###############################################################################################
 
     if event == '-CONFIRM_IP_2MP-':
-        print(event, values)
+
         client = values["-CLIENT-IN-IP2MP-"]
         if client == "":
             client = "somebody_someone"
@@ -934,7 +928,7 @@ while True:
   ###########################################################################################
 
     if event == '-CONFIRM_IP_5MP-':
-        print(event, values)
+
         client = values["-CLIENT-IN-IP5MP-"]
         if client == "":
             client = "somebody_someone"
@@ -969,7 +963,7 @@ while True:
         elif int(quantity) <= 0:
             sg.popup("Пардон, сударь, но, похоже, вы гоните ! Количество камер меньше 1")
 
-    print(f"РАсчеты")
+
     with open(f"Видеонаблюдение для {client.title()} на {today_is()}.csv", "w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(("№", "Наименование", "Цена", "количество", "Сумма!"))
