@@ -5,8 +5,20 @@ from openpyexcel import load_workbook
 import csv
 import math
 
+#Переменные
 
+reg_channels = 0
+counter = 1
+quantity = 0
+client = ""
+reg_count = 0
+hdd_count = 0
+hdd_size = None
+cable = 0
+power_backup = 0
+power_backup_index = 32
 
+#Интерфейс
 
 
 ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT-IN-2MP-', size=(30, 1),justification="l"),],
@@ -14,11 +26,14 @@ ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIE
                                                       [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-2MP-', size=(5, 1),justification="r")],
 
                                                       [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-2MP-', size=(5, 1),justification="r")],
+[sg.Text('_'*45,text_color="Darkgray")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio1', default=True, key='-4PORTS1-', size=(2, 1)),
                                                       sg.Radio('8', 'radio1', key='-8PORTS1-', size=(2, 1)),
                                                       sg.Radio('16', 'radio1', key='-16PORTS1-', size=(2, 1)),
                                                       sg.Radio('32', 'radio1', key='-32PORTS1-', size=(2, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
+
 
 [sg.Text('Размер жесткого диска:')],             [sg.Radio('1 ТБ', 'radio_HDD_SIZE_2MP', default=True, key='-1TB-HDD-2MP-', size=(5, 1)),
                                                   sg.Radio('2 ТБ', 'radio_HDD_SIZE_2MP', key='-2TB-HDD-2MP-', size=(5, 1)),
@@ -28,9 +43,16 @@ ahd_2mp =  [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIE
                                                   sg.Radio('6 ТБ ', 'radio_HDD_SIZE_2MP', key='-6TB-HDD-2MP-', size=(5, 1)),
                                                   sg.Radio('7 ТБ ', 'radio_HDD_SIZE_2MP', key='-7TB-HDD-2MP-', size=(5, 1)),
                                                   sg.Radio('8 ТБ', 'radio_HDD_SIZE_2MP', key='-8TB-HDD-2MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
 [sg.Text('Количество жестких дисков:')],              [sg.Radio('1 HDD', 'radio_HDD_2MP', default=True, key='-1ITEMS-HDD-2MP-', size=(5, 1)),
                                                       sg.Radio('2 HDD', 'radio_HDD_2MP', key='-2ITEMS-HDD-2MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
+
+[sg.Text('Блок бесперебойного питания:')],              [sg.Radio('Нет', 'power_backup', default=True, key='-PB-NO-2MP-', size=(5, 1)),
+                                                      sg.Radio('Да', 'power_backup', key='-PB-YES-2MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
+
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_2MP-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
@@ -42,23 +64,31 @@ ahd_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIEN
                                                       [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-5MP-', size=(5, 1),justification="r")],
 
                                                       [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-5MP-', size=(5, 1),justification="r")],
+[sg.Text('_'*45,text_color="Darkgray")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio2', default=True, key='-4PORTS2-', size=(2, 1)),
                                                       sg.Radio('8', 'radio2', key='-8PORTS2-', size=(2, 1)),
                                                       sg.Radio('16', 'radio2', key='-16PORTS2-', size=(2, 1)),
                                                       sg.Radio('32', 'radio2', key='-32PORTS2-', size=(2, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
 [sg.Text('Размер жесткого диска:')],             [sg.Radio('1 ТБ', 'radio_HDD_SIZE_5MP', default=True, key='-1TB-HDD-5MP-', size=(5, 1)),
-                                                  sg.Radio('2 ТБ', 'radio_HDD_SIZE_5MP', key='-2TB-HDD-2MP-', size=(5, 1)),
-                                                  sg.Radio('3 ТБ ', 'radio_HDD_SIZE_5MP', key='-3TB-HDD-2MP-', size=(5, 1)),
-                                                  sg.Radio('4 ТБ ', 'radio_HDD_SIZE_5MP', key='-4TB-HDD-2MP-', size=(5, 1))],
-                                                  [sg.Radio('5 ТБ ', 'radio_HDD_SIZE_5MP', key='-5TB-HDD-2MP-', size=(5, 1)),
-                                                  sg.Radio('6 ТБ ', 'radio_HDD_SIZE_5MP', key='-6TB-HDD-2MP-', size=(5, 1)),
-                                                  sg.Radio('7 ТБ ', 'radio_HDD_SIZE_5MP', key='-7TB-HDD-2MP-', size=(5, 1)),
-                                                  sg.Radio('8 ТБ', 'radio_HDD_SIZE_5MP', key='-8TB-HDD-2MP-', size=(5, 1))],
+                                                  sg.Radio('2 ТБ', 'radio_HDD_SIZE_5MP', key='-2TB-HDD-5MP-', size=(5, 1)),
+                                                  sg.Radio('3 ТБ ', 'radio_HDD_SIZE_5MP', key='-3TB-HDD-5MP-', size=(5, 1)),
+                                                  sg.Radio('4 ТБ ', 'radio_HDD_SIZE_5MP', key='-4TB-HDD-5MP-', size=(5, 1))],
+                                                  [sg.Radio('5 ТБ ', 'radio_HDD_SIZE_5MP', key='-5TB-HDD-5MP-', size=(5, 1)),
+                                                  sg.Radio('6 ТБ ', 'radio_HDD_SIZE_5MP', key='-6TB-HDD-5MP-', size=(5, 1)),
+                                                  sg.Radio('7 ТБ ', 'radio_HDD_SIZE_5MP', key='-7TB-HDD-5MP-', size=(5, 1)),
+                                                  sg.Radio('8 ТБ', 'radio_HDD_SIZE_5MP', key='-8TB-HDD-5MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
 [sg.Text('Количество жестких дисков:')],[sg.Radio('1 HDD', 'radio_HDD_5MP', default=True, key='-1ITEMS-HDD-5MP-', size=(5, 1)),
                                                       sg.Radio('2 HDD', 'radio_HDD_5MP', key='-2ITEMS-HDD-5MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
+
+[sg.Text('Блок бесперебойного питания:')],              [sg.Radio('Нет', 'power_backup_ahd_5', default=True, key='-PB-NO-5MP-', size=(5, 1)),
+                                                      sg.Radio('Да', 'power_backup_ahd_5', key='-PB-YES-5MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_AHD_5MP-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
@@ -69,12 +99,16 @@ ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                       [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-IP2MP-', size=(5, 1),justification="r")],
 
                                                       [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-IP2MP-', size=(5, 1),justification="r")],
+
+[sg.Text('_'*45,text_color="Darkgray")],
+
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio3', default=True, key='-4PORTS3-', size=(2, 1)),
                                                       sg.Radio('8', 'radio3', key='-8PORTS3-', size=(2, 1)),
                                                       sg.Radio('9', 'radio3', key='-9PORTS3-', size=(2, 1)),
                                                       sg.Radio('16', 'radio3', key='-16PORTS3-', size=(2, 1)),
                                                       sg.Radio('32', 'radio3', key='-32PORTS3-', size=(2, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
 [sg.Text('Размер жесткого диска:')],             [sg.Radio('1 ТБ', 'radio_HDD_SIZE_IP2MP', default=True, key='-1TB-HDD-IP2MP-', size=(5, 1)),
                                                   sg.Radio('2 ТБ', 'radio_HDD_SIZE_IP2MP', key='-2TB-HDD-IP2MP-', size=(5, 1)),
@@ -85,8 +119,15 @@ ip_2mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                   sg.Radio('7 ТБ ', 'radio_HDD_SIZE_IP2MP', key='-7TB-HDD-IP2MP-', size=(5, 1)),
                                                   sg.Radio('8 ТБ', 'radio_HDD_SIZE_IP2MP', key='-8TB-HDD-IP2MP-', size=(5, 1))],
 
+[sg.Text('_'*45,text_color="Darkgray")],
+
 [sg.Text('Количество жестких дисков:')],[sg.Radio('1 HDD', 'radio_HDD_ip2mp', default=True, key='-1ITEMS-HDD-IP2MP-', size=(5, 1)),
                                                       sg.Radio('2 HDD', 'radio_HDD_ip2mp', key='-2ITEMS-HDD-IP2MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
+
+[sg.Text('Блок бесперебойного питания:')],              [sg.Radio('Нет', 'power_backup_ip_2mp', default=True, key='-PB-NO-IP2MP-', size=(5, 1)),
+                                                      sg.Radio('Да', 'power_backup_ip_2mp', key='-PB-YES-IP2MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_2MP-',size=(10,1))],
                                  [sg.Text('      '), sg.Image(filename="img/IP.png")]
@@ -97,12 +138,16 @@ ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                       [sg.Text('Примерное количество кабеля,м      '),sg.Input(key='-CABLE-IN-IP5MP-', size=(5, 1),justification="r")],
 
                                                       [sg.Text('Количество камер:                           '),sg.Input(key='-CAM-IN-IP5MP-', size=(5, 1),justification="r")],
+
+[sg.Text('_'*45,text_color="Darkgray")],
                                                       [sg.Text('Количество портов регистратора:')],
                                                       [sg.Radio('4', 'radio4', default=True, key='-4PORTS4-', size=(2, 1)),
                                                       sg.Radio('8', 'radio4', key='-8PORTS4-', size=(2, 1)),
                                                       sg.Radio('9', 'radio4', key='-9PORTS4-', size=(2, 1)),
                                                       sg.Radio('16', 'radio4', key='-16PORTS4-', size=(2, 1)),
                                                       sg.Radio('32', 'radio4', key='-32PORTS4-', size=(2, 1))],
+
+[sg.Text('_'*45,text_color="Darkgray")],
 
 [sg.Text('Размер жесткого диска:')],             [sg.Radio('1 ТБ', 'radio_HDD_SIZE_IP5MP', default=True, key='-1TB-HDD-IP5MP-', size=(5, 1)),
                                                   sg.Radio('2 ТБ', 'radio_HDD_SIZE_IP5MP', key='-2TB-HDD-IP5MP-', size=(5, 1)),
@@ -113,8 +158,16 @@ ip_5mp = [[sg.Text(), sg.Column([[sg.Text('Клиент:'),sg.Input(key='-CLIENT
                                                   sg.Radio('7 ТБ ', 'radio_HDD_SIZE_IP5MP', key='-7TB-HDD-IP5MP-', size=(5, 1)),
                                                   sg.Radio('8 ТБ', 'radio_HDD_SIZE_IP5MP', key='-8TB-HDD-IP5MP-', size=(5, 1))],
 
+[sg.Text('_'*45,text_color="Darkgray")],
+
 [sg.Text('Количество жестких дисков:')],[sg.Radio('1 HDD', 'radio_HDD_ip5mp', default=True, key='-1ITEMS-HDD-IP5MP-', size=(5, 1)),
                                                       sg.Radio('2 HDD', 'radio_HDD_ip5mp', key='-2ITEMS-HDD-IP5MP-', size=(5, 1))],
+
+[sg.Text('_'*45,text_color="Darkgray")],
+
+[sg.Text('Блок бесперебойного питания:')],              [sg.Radio('Нет', 'power_backup_ip_5mp', default=True, key='-PB-NO-IP5MP-', size=(5, 1)),
+                                                      sg.Radio('Да', 'power_backup_ip_5mp', key='-PB-YES-IP5MP-', size=(5, 1))],
+[sg.Text('_'*45,text_color="Darkgray")],
 
         [sg.Text('                             '),sg.Button('OK', key='-CONFIRM_IP_5MP-',size=(10,1))],
                                 # [sg.Text("CSV-Файл со сметой  сформирован! ", key="--FINAL_MESSAGE--",visible=False)],
@@ -140,7 +193,7 @@ tab_group = [[sg.TabGroup(
                     sg.Tab("IP-2MP",ip_2mp,key='-IP2MP-',expand_x=True,background_color="Orange"),
                     sg.Tab("IP-5MP",ip_5mp,key='-IP5MP-',expand_x=True,background_color="Purple"),
                     sg.Tab("Compact-IP",compact_ip, key='-COMPAC-',expand_x=True),
-                  ]],pad=10)]]
+                  ]],pad= 0)]]
 
 window = sg.Window('MatrixCam', tab_group)
 
@@ -150,13 +203,7 @@ def today_is():
     return dt.now().strftime("%d.%m.%Y")
 
 
-reg_channels = 0
-counter = 1
-quantity = 0
-client = ""
-reg_count = 0
-hdd_count = 0
-cable = 0
+
 
 
 
@@ -166,7 +213,17 @@ book = load_workbook(filename="Equipment.xlsx")
 sheet = book["Equip"]
 ############################################################################################################
 
-def cam_calc_1(counter,quantity,hdd_count):
+def parse_prices():
+    pass
+
+
+
+
+
+
+
+
+def cam_calc_1(counter,quantity,hdd_count,hdd_size,power_backup):
     print("Вариант 2MP...")
     list = [2,15,16,18]
     for i in list:
@@ -183,14 +240,44 @@ def cam_calc_1(counter,quantity,hdd_count):
         counter+=1
 
         #Жесткий диск
+
+        #Размер жесткого диска
+    if values['-1TB-HDD-2MP-']:
+        hdd_size = 11
+
+    elif  values['-2TB-HDD-2MP-']:
+        hdd_size = 25
+
+    elif values['-3TB-HDD-2MP-']:
+        hdd_size = 26
+
+    elif values['-4TB-HDD-2MP-']:
+        hdd_size = 27
+
+    elif values['-5TB-HDD-2MP-']:
+        hdd_size = 28
+
+    elif values['-6TB-HDD-2MP-']:
+        hdd_size = 29
+
+    elif values['-7TB-HDD-2MP-']:
+        hdd_size = 30
+
+    elif values['-8TB-HDD-2MP-']:
+        hdd_size = 31
+
+
+        # Количество жестких дисков
+
     if values['-1ITEMS-HDD-2MP-']:
         hdd_count = 1
     elif values['-2ITEMS-HDD-2MP-']:
         hdd_count = 2
 
+
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",newline="") as file:
         writer = csv.writer(file)
-        writer.writerow((counter, sheet[f"a{11}"].value, sheet[f"B{11}"].value, hdd_count, int(sheet[f"B{11}"].value) * hdd_count))
+        writer.writerow((counter, sheet[f"a{hdd_size}"].value, sheet[f"B{hdd_size}"].value, hdd_count, int(sheet[f"B{hdd_size}"].value) * hdd_count))
         counter += 1
 
     # Условие  выбора регистратора:  ############################################################################
@@ -223,14 +310,31 @@ def cam_calc_1(counter,quantity,hdd_count):
                          int(sheet[f"B{reg_count}"].value) * 1))
         counter += 1
 
-        # подсчет суммы :  ####################################################################################
+        ##Бесперебойник###########
 
-    list2 = [reg_count, 11]
+    if values['-PB-YES-2MP-']:
+        power_backup = int(sheet[f"B{power_backup_index}"].value)
+        print(power_backup)
+        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
+                  newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow((counter, sheet[f"a{power_backup_index}"].value, sheet[f"B{power_backup_index}"].value, 1,
+                             int(sheet[f"B{power_backup_index}"].value) * 1))
+            counter += 1
+
+
+
+
+        # подсчет суммы :  ####################################################################################
+    hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
+
+    list2 = [reg_count]
     sum1 = 0
     sum2 = 0
 
     for i in list:
         sum1 = int(sheet[f"B{i}"].value)*int(quantity)+sum1
+
 
     for i in list2:
         sum2 = int(sheet[f"B{i}"].value) + sum2
@@ -270,10 +374,10 @@ def cam_calc_1(counter,quantity,hdd_count):
     #Итого
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(("","Итого","","", sum1 + sum2 + sum_cab + power_supply))
+        writer.writerow(("","Итого","","", sum1 + sum2 + sum_cab + power_supply + hdd_sum + power_backup))
 ########################################################################################################################
 
-def cam_calc_2(counter,quantity,hdd_count):
+def cam_calc_2(counter,quantity,hdd_count,hdd_size,power_backup):
     print("Вариант 5MP...")
 
 
@@ -297,6 +401,35 @@ def cam_calc_2(counter,quantity,hdd_count):
         counter += 1
 
         # Жесткий диск
+        # Размер жесткого диска
+
+    if values['-1TB-HDD-5MP-']:
+        hdd_size = 11
+
+    elif values['-2TB-HDD-5MP-']:
+        hdd_size = 25
+
+    elif values['-3TB-HDD-5MP-']:
+        hdd_size = 26
+
+    elif values['-4TB-HDD-5MP-']:
+        hdd_size = 27
+
+    elif values['-5TB-HDD-5MP-']:
+        hdd_size = 28
+
+    elif values['-6TB-HDD-5MP-']:
+        hdd_size = 29
+
+    elif values['-7TB-HDD-5MP-']:
+        hdd_size = 30
+
+    elif values['-8TB-HDD-5MP-']:
+        hdd_size = 31
+
+        # количество жестких дисков
+
+
     if values['-1ITEMS-HDD-5MP-']:
         hdd_count = 1
     elif values['-2ITEMS-HDD-5MP-']:
@@ -305,8 +438,8 @@ def cam_calc_2(counter,quantity,hdd_count):
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
               newline="") as file:
         writer = csv.writer(file)
-        writer.writerow((counter, sheet[f"a{11}"].value, sheet[f"B{11}"].value, hdd_count,
-                         int(sheet[f"B{11}"].value) * hdd_count))
+        writer.writerow((counter, sheet[f"a{hdd_size}"].value, sheet[f"B{hdd_size}"].value, hdd_count,
+                         int(sheet[f"B{hdd_size}"].value) * hdd_count))
         counter += 1
 
 
@@ -337,9 +470,24 @@ def cam_calc_2(counter,quantity,hdd_count):
                          int(sheet[f"B{reg_count}"].value) * 1))
         counter += 1
 
+        ##Бесперебойник###########
+
+    if values['-PB-YES-5MP-']:
+        power_backup = int(sheet[f"B{power_backup_index}"].value)
+        print(power_backup)
+        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
+                  newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                (counter, sheet[f"a{power_backup_index}"].value, sheet[f"B{power_backup_index}"].value, 1,
+                 int(sheet[f"B{power_backup_index}"].value) * 1))
+            counter += 1
+
         # подсчет суммы :  ####################################################################################
 
-    list2 = [reg_count, 11]
+    hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
+    print("hdd_sum = ", hdd_sum)
+    list2 = [reg_count]
     sum1 = 0
     sum2 = 0
 
@@ -384,10 +532,10 @@ def cam_calc_2(counter,quantity,hdd_count):
     # Итого
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply))
+        writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply + hdd_sum + power_backup))
 ########################################################################################################################
 
-def ip_cam_calc_3(counter,quantity,hdd_count):
+def ip_cam_calc_3(counter,quantity,hdd_count,hdd_size,power_backup):
     print("Вариант IP 2MP...")
     counter = 1
     list = [9, 21, 16, 18]
@@ -408,6 +556,32 @@ def ip_cam_calc_3(counter,quantity,hdd_count):
             (counter, sheet[f"a{24}"].value, sheet[f"B{24}"].value, cable, int(sheet[f"B{24}"].value) * int(cable)))
         counter += 1
         # Жесткий диск
+
+        # Размер жесткого диска
+    if values['-1TB-HDD-IP2MP-']:
+        hdd_size = 11
+
+    elif values['-2TB-HDD-IP2MP-']:
+        hdd_size = 25
+
+    elif values['-3TB-HDD-IP2MP-']:
+        hdd_size = 26
+
+    elif values['-4TB-HDD-IP2MP-']:
+        hdd_size = 27
+
+    elif values['-5TB-HDD-IP2MP-']:
+        hdd_size = 28
+
+    elif values['-6TB-HDD-IP2MP-']:
+        hdd_size = 29
+
+    elif values['-7TB-HDD-IP2MP-']:
+        hdd_size = 30
+
+    elif values['-8TB-HDD-IP2MP-']:
+        hdd_size = 31
+
     if values['-1ITEMS-HDD-IP2MP-']:
         hdd_count = 1
     elif values['-2ITEMS-HDD-IP2MP-']:
@@ -415,7 +589,7 @@ def ip_cam_calc_3(counter,quantity,hdd_count):
 
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",newline="") as file:
         writer = csv.writer(file)
-        writer.writerow((counter, sheet[f"a{11}"].value, sheet[f"B{11}"].value, hdd_count,int(sheet[f"B{11}"].value) * hdd_count))
+        writer.writerow((counter, sheet[f"a{hdd_size}"].value, sheet[f"B{hdd_size}"].value, hdd_count,int(sheet[f"B{hdd_size}"].value) * hdd_count))
         counter += 1
 
         # Условие  выбора регистратора:  ############################################################################
@@ -449,12 +623,24 @@ def ip_cam_calc_3(counter,quantity,hdd_count):
                          int(sheet[f"B{reg_count}"].value) * 1))
         counter += 1
 
+        ##Бесперебойник###########
+
+    if values['-PB-YES-IP2MP-']:
+        power_backup = int(sheet[f"B{power_backup_index}"].value)
+        print(power_backup)
+        with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
+                  newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(
+                (counter, sheet[f"a{power_backup_index}"].value, sheet[f"B{power_backup_index}"].value, 1,
+                 int(sheet[f"B{power_backup_index}"].value) * 1))
+            counter += 1
+
         ############## подсчет суммы
 
-    list2 = [reg_count, 11]
-
-
-
+    hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
+    print("hdd_sum = ", hdd_sum)
+    list2 = [reg_count]
     sum1 = 0
     sum2 = 0
 
@@ -464,7 +650,7 @@ def ip_cam_calc_3(counter,quantity,hdd_count):
     for i in list2:
         sum2 = int(sheet[f"B{i}"].value) + sum2
 
-    # Блок питания :условие для подсчета количества БП
+    # расчет мощности блоков питания(2А или 3А)
     power_supply = 0
 
     if int(quantity) < 2:
@@ -474,34 +660,36 @@ def ip_cam_calc_3(counter,quantity,hdd_count):
             writer.writerow((counter, sheet[f"a{14}"].value, sheet[f"B{14}"].value, 1,
                              int(sheet[f"B{14}"].value) * 1))
             power_supply = int(sheet[f"B{14}"].value)
-    elif int(quantity) >= 2 and int(quantity) < 4:
+    elif 2 <= int(quantity) < 4:
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
             writer.writerow((counter, sheet[f"a{13}"].value, sheet[f"B{13}"].value, 1,
                              int(sheet[f"B{13}"].value) * 1))
-            power_supply = int(sheet[f"B{13}"].value)
+        power_supply = int(sheet[f"B{13}"].value)
     else:
-        # расчет количества блоков питания (power suply quantity), PSQ
+        # расчет количества блоков питания (power suply quantity(PSQ))    ########################################
+
         psq = math.ceil(int(quantity) / 7)
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
             writer.writerow((counter, sheet[f"a{13}"].value, sheet[f"B{13}"].value, psq,
                              int(sheet[f"B{13}"].value) * psq))
-            power_supply = int(sheet[f"B{13}"].value) * psq
+        power_supply = int(sheet[f"B{13}"].value) * psq
 
     # Всего кабеля
-    sum_cab = int(cable) * int(sheet[f"B{24}"].value)
+
+    sum_cab = int(cable) * int(sheet[f"B{17}"].value)
 
     # Итого
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply))
+        writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply + hdd_sum + power_backup))
 
 ########################################################################################################################
 
-def ip_cam_calc_4(counter,quantity,hdd_count):
+def ip_cam_calc_4(counter,quantity,hdd_count,hdd_size,power_backup):
     print("Вариант IP 5MP...")
 
     counter = 1
@@ -524,6 +712,32 @@ def ip_cam_calc_4(counter,quantity,hdd_count):
             (counter, sheet[f"a{24}"].value, sheet[f"B{24}"].value, cable, int(sheet[f"B{24}"].value) * int(cable)))
         counter += 1
         # Жесткий диск
+        # Размер жесткого диска
+    if values['-1TB-HDD-IP5MP-']:
+        hdd_size = 11
+
+    elif values['-2TB-HDD-IP5MP-']:
+        hdd_size = 25
+
+    elif values['-3TB-HDD-IP5MP-']:
+        hdd_size = 26
+
+    elif values['-4TB-HDD-IP5MP-']:
+        hdd_size = 27
+
+    elif values['-5TB-HDD-IP5MP-']:
+        hdd_size = 28
+
+    elif values['-6TB-HDD-IP5MP-']:
+        hdd_size = 29
+
+    elif values['-7TB-HDD-IP5MP-']:
+        hdd_size = 30
+
+    elif values['-8TB-HDD-IP5MP-']:
+        hdd_size = 31
+
+
     if values['-1ITEMS-HDD-IP5MP-']:
         hdd_count = 1
     elif values['-2ITEMS-HDD-IP5MP-']:
@@ -532,8 +746,8 @@ def ip_cam_calc_4(counter,quantity,hdd_count):
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
               newline="") as file:
         writer = csv.writer(file)
-        writer.writerow((counter, sheet[f"a{11}"].value, sheet[f"B{11}"].value, hdd_count,
-                         int(sheet[f"B{11}"].value) * hdd_count))
+        writer.writerow((counter, sheet[f"a{hdd_size}"].value, sheet[f"B{hdd_size}"].value, hdd_count,
+                         int(sheet[f"B{hdd_size}"].value) * hdd_count))
         counter += 1
 
         # Условие  выбора регистратора:  ############################################################################
@@ -566,10 +780,26 @@ def ip_cam_calc_4(counter,quantity,hdd_count):
             writer.writerow((counter, sheet[f"a{reg_count}"].value, sheet[f"B{reg_count}"].value, 1,
                              int(sheet[f"B{reg_count}"].value) * 1))
             counter += 1
-    list2 = [reg_count, 11]
+
+            ##Бесперебойник###########
+
+            if values['-PB-YES-IP5MP-']:
+                power_backup = int(sheet[f"B{power_backup_index}"].value)
+                print(power_backup)
+                with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
+                          newline="") as file:
+                    writer = csv.writer(file)
+                    writer.writerow(
+                        (counter, sheet[f"a{power_backup_index}"].value, sheet[f"B{power_backup_index}"].value, 1,
+                         int(sheet[f"B{power_backup_index}"].value) * 1))
+                    counter += 1
+
 
     # подсчет суммы
 
+    hdd_sum = int(sheet[f"B{hdd_size}"].value) * hdd_count
+    print("hdd_sum = ", hdd_sum)
+    list2 = [reg_count]
     sum1 = 0
     sum2 = 0
 
@@ -579,7 +809,7 @@ def ip_cam_calc_4(counter,quantity,hdd_count):
     for i in list2:
         sum2 = int(sheet[f"B{i}"].value) + sum2
 
-    # Блок питания :условие для подсчета количества БП
+    # расчет мощности блоков питания(2А или 3А)
     power_supply = 0
 
     if int(quantity) < 2:
@@ -589,30 +819,32 @@ def ip_cam_calc_4(counter,quantity,hdd_count):
             writer.writerow((counter, sheet[f"a{14}"].value, sheet[f"B{14}"].value, 1,
                              int(sheet[f"B{14}"].value) * 1))
             power_supply = int(sheet[f"B{14}"].value)
-    elif int(quantity) >= 2 and int(quantity) < 4:
+    elif 2 <= int(quantity) < 4:
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
             writer.writerow((counter, sheet[f"a{13}"].value, sheet[f"B{13}"].value, 1,
                              int(sheet[f"B{13}"].value) * 1))
-            power_supply = int(sheet[f"B{13}"].value)
+        power_supply = int(sheet[f"B{13}"].value)
     else:
-        # расчет количества блоков питания (power suply quantity), PSQ
+        # расчет количества блоков питания (power suply quantity(PSQ))    ########################################
+
         psq = math.ceil(int(quantity) / 7)
         with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8",
                   newline="") as file:
             writer = csv.writer(file)
             writer.writerow((counter, sheet[f"a{13}"].value, sheet[f"B{13}"].value, psq,
                              int(sheet[f"B{13}"].value) * psq))
-            power_supply = int(sheet[f"B{13}"].value) * psq
+        power_supply = int(sheet[f"B{13}"].value) * psq
 
     # Всего кабеля
-    sum_cab = int(cable) * int(sheet[f"B{24}"].value)
+
+    sum_cab = int(cable) * int(sheet[f"B{17}"].value)
 
     # Итого
     with open(f"Видеонаблюдение для {client.capitalize()} на {today_is()}.csv", "a", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply))
+        writer.writerow(("", "Итого", "", "", sum1 + sum2 + sum_cab + power_supply + hdd_sum+power_backup))
 
 ########################################################################################################################
 
@@ -743,16 +975,16 @@ while True:
         writer.writerow(("№", "Наименование", "Цена", "количество", "Сумма!"))
 
     if event == "-CONFIRM_AHD_2MP-":
-        cam_calc_1(counter,quantity,hdd_count)
+        cam_calc_1(counter,quantity,hdd_count,hdd_size,power_backup)
 
     elif event == "-CONFIRM_AHD_5MP-":
-        cam_calc_2(counter,quantity,hdd_count)
+        cam_calc_2(counter,quantity,hdd_count,hdd_size,power_backup)
 
     elif event == "-CONFIRM_IP_2MP-":
-        ip_cam_calc_3(counter,quantity,hdd_count)
+        ip_cam_calc_3(counter,quantity,hdd_count,hdd_size,power_backup)
 
     elif event == "-CONFIRM_IP_5MP-":
-        ip_cam_calc_4(counter,quantity,hdd_count)
+        ip_cam_calc_4(counter,quantity,hdd_count,hdd_size,power_backup)
 
     elif event == '-CONFIRM_COMPAC-':
         ip_sd_calc_5(counter,quantity)
